@@ -34,7 +34,7 @@ const App = () => {
     }, [rating]);
 
     useEffect(() => {
-        if (bounds) {
+        if (bounds.sw && bounds.ne) {
             setIsLoading(true)
             getPlacesData(type, bounds.sw, bounds.ne)
                 .then((data) => {
@@ -43,7 +43,7 @@ const App = () => {
                     setIsLoading(false)
                 })
         }
-    }, [type, coordinates, bounds]);
+    }, [type, bounds]);
 
   return (
     <>

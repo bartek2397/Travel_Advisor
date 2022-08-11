@@ -5,6 +5,8 @@ import LocationOnOutlineIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles';
 
+import mapStyles from './mapStyles';
+
 const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }) => {
     const classes = useStyles();
     const isDesktop = useMediaQuery('(min-width:600px)')
@@ -13,12 +15,12 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }
     return (
         <div className={classes.mapContainer}>
            <GoogleMapReact
-               bootstrapURLKeys={{ key: 'AIzaSyDiiI3VrB6UqWA3BWKlwl2GT_77pnXqlFo'}}
+               bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY}}
                defaultCenter={coordinates}
                center={coordinates}
                defaultZoom={14}
                margin={[50, 50, 50, 50]}
-               options={''}
+               options={{ disableDefaultUI: true, zoomControl: true, styles: mapStyles }}
                onChange={(e) => {
                    setCoordinates({ lat: e.center.lat, lng: e.center.lng });
                    setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
@@ -27,7 +29,7 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }
 
            >
                {places?.map((place, i) => (
-                   <div className={classes.markerContainer} lat={place.latitude} lng={place.longitude} key={i}>
+                   <div className={classes.markerContainer} lat={Number(place.latitude)} lng={Number(place.longitude)} key={i}>
                        {
                            !isDesktop ? (
                                <LocationOnOutlineIcon color='primary' fontSize='large' />
